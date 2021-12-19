@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<project name="Trumpet">
+
+    <target name="clean">
+        <delete dir="build"/>
+        <delete dir="jar"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="build"/>
+        <javac srcdir="src" destdir="build" modulepath="./lib" >
+        	<compilerarg line="--add-modules javafx.base,javafx.graphics,javafx.controls"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="jar"/>
+        <jar destfile="jar/Trumpet.jar" basedir="build">
+            <manifest>
+                <attribute name="Main-Class" value="com.tekronet.code.Trumpet" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="jar/Trumpet.jar" fork="true" modulepath="./lib" >
+        	<jvmarg line="--add-modules javafx.controls,javafx.graphics"/>
+        </java>
+    </target>
+    
+    <target name="frun">
+        <java jar="jar/Trumpet.jar" fork="true" modulepath="./lib" >
+        	<jvmarg line="--add-modules javafx.controls,javafx.graphics"/>
+        </java>
+    </target>
+</project>
