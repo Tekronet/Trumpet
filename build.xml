@@ -12,13 +12,19 @@
         <javac srcdir="src" destdir="build" modulepath="./lib" >
         	<compilerarg line="--add-modules javafx.base,javafx.graphics,javafx.controls"/>
         </javac>
+        <copy file="src/com.tekronet/ui/main.css" todir="build/com/tekronet/ui"/>
+        <copy file="src/com.tekronet/ui/res/Lato-Regular.ttf" todir="build/com/tekronet/ui/res"/>
+       	<copy file="src/com.tekronet/ui/res/play.png" todir="build/com/tekronet/ui/res"/>
+       	<copy file="src/com.tekronet/ui/res/pause.png" todir="build/com/tekronet/ui/res"/>
+       	<copy file="src/com.tekronet/ui/res/skipBack.png" todir="build/com/tekronet/ui/res"/>
+       	<copy file="src/com.tekronet/ui/res/skipForward.png" todir="build/com/tekronet/ui/res"/>
     </target>
 
     <target name="jar" depends="compile">
         <mkdir dir="jar"/>
         <jar destfile="jar/Trumpet.jar" basedir="build">
             <manifest>
-                <attribute name="Main-Class" value="com.tekronet.code.Trumpet" />
+                <attribute name="Main-Class" value="com.tekronet.backend.Trumpet" />
             </manifest>
         </jar>
     </target>
