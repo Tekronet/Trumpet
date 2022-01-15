@@ -1,22 +1,6 @@
 .menubar {
 	-fx-font-family: Lato;
 	-fx-font-size: 14.5px
-	/*-fx-background-color:linear-gradient(from 25% 25% to 100% 100%, #094c80, #c828e0);*/
-}
-
-.menubar .menu:hover {
-	/*-fx-background-color: #094c80;*/
-}
-
-.menuitem .label{
-	-fx-text-fill: black;
-}
-
-.quick-menu {
-}
-
-.quick-control-button {
-
 }
 
 .song-list {
@@ -24,4 +8,13 @@
 	-fx-font-family: Lato;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
+}
+.quick-control-button {
+	-fx-border-color: #e8e8e8;
+	-fx-padding: 10px;
+	
+}
+.quick-control-button:hover {
+	-fx-focus-color: #e8e8e8;
+	-fx-border-color: #e8e8e8;
 }

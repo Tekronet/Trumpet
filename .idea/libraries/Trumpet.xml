@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Trumpet">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/jar/Trumpet.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

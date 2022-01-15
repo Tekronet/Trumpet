@@ -10,7 +10,7 @@
     <target name="compile" depends="clean">
         <mkdir dir="build"/>
         <javac srcdir="src" destdir="build" modulepath="./lib" >
-        	<compilerarg line="--add-modules javafx.base,javafx.graphics,javafx.controls"/>
+        	<compilerarg line="--add-modules javafx.base,javafx.graphics,javafx.controls,javafx.media"/>
         </javac>
         <copy file="src/com.tekronet/ui/main.css" todir="build/com/tekronet/ui"/>
         <copy file="src/com.tekronet/ui/res/Lato-Regular.ttf" todir="build/com/tekronet/ui/res"/>
@@ -31,13 +31,13 @@
 
     <target name="run" depends="jar">
         <java jar="jar/Trumpet.jar" fork="true" modulepath="./lib" >
-        	<jvmarg line="--add-modules javafx.controls,javafx.graphics"/>
+        	<jvmarg line="--add-modules javafx.controls,javafx.graphics,javafx.media"/>
         </java>
     </target>
     
     <target name="frun">
         <java jar="jar/Trumpet.jar" fork="true" modulepath="./lib" >
-        	<jvmarg line="--add-modules javafx.controls,javafx.graphics"/>
+        	<jvmarg line="--add-modules javafx.controls,javafx.graphics,javafx.media"/>
         </java>
     </target>
 </project>
