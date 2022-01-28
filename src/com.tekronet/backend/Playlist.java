@@ -15,6 +15,7 @@ public class Playlist {
 	
 	public void addSongs(ListView<String> songList) {
 		FileChooser filechooser = new FileChooser();
+		filechooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Music"));
 		filechooser.setTitle("Select audio files");
 		
 		List<File> audioFilesList = filechooser.showOpenMultipleDialog(null);

@@ -14,10 +14,6 @@
         </javac>
         <copy file="src/com.tekronet/ui/main.css" todir="build/com/tekronet/ui"/>
         <copy file="src/com.tekronet/ui/res/Lato-Regular.ttf" todir="build/com/tekronet/ui/res"/>
-       	<copy file="src/com.tekronet/ui/res/play.png" todir="build/com/tekronet/ui/res"/>
-       	<copy file="src/com.tekronet/ui/res/pause.png" todir="build/com/tekronet/ui/res"/>
-       	<copy file="src/com.tekronet/ui/res/skipBack.png" todir="build/com/tekronet/ui/res"/>
-       	<copy file="src/com.tekronet/ui/res/skipForward.png" todir="build/com/tekronet/ui/res"/>
     </target>
 
     <target name="jar" depends="compile">

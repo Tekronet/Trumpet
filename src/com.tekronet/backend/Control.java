@@ -3,6 +3,7 @@ package com.tekronet.backend;
 import javafx.scene.control.ListView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.control.*;
 
 import java.io.*;
 import java.util.*;
@@ -12,8 +13,8 @@ import com.tekronet.ui.MainView;
 
 public class Control {
 
-	Media media;
-	MediaPlayer mediaPlayer;
+	public static Media media;
+	public static MediaPlayer mediaPlayer;
 	
 	boolean second = false;
 	public boolean playing = false;
@@ -25,7 +26,7 @@ public class Control {
 		playlist.addSongs(songList);
 	}
 	
-	public void createMediaPlayer(ListView<String> songList) {
+	public void createMediaPlayer(ListView<String> songList, Slider progressBar, Slider volumeSlider, Label l) {
 		if (second) {
 			mediaPlayer.stop();
 		}
@@ -39,6 +40,8 @@ public class Control {
 		mediaPlayer.stop();
 		mediaPlayer.play();
 		playing = true;
+		Sliders.initListeners(progressBar, volumeSlider);
+		l.setText(file.getName());
 	}
 	
 	public void closeSong(ListView<String> songList) {
@@ -71,7 +74,7 @@ public class Control {
 		}
 	}
 	
-	public void nextSong(ListView<String> songList) {
+	public void nextSong(ListView<String> songList, Slider progressBar, Slider volumeSlider) {
 		if (songList.getSelectionModel().getSelectedIndex() + 1  < songList.getItems().size()) {
 			mediaPlayer.stop();
 			
@@ -83,10 +86,11 @@ public class Control {
 			mediaPlayer.play();
 			playing = true;
 			songList.getSelectionModel().select(songList.getSelectionModel().getSelectedIndex() + 1);
+			Sliders.initListeners(progressBar, volumeSlider);
 		}
 	}
 	
-	public void prevSong(ListView<String> songList) {
+	public void prevSong(ListView<String> songList, Slider progressBar, Slider volumeSlider) {
 		if (songList.getSelectionModel().getSelectedIndex() > 0) {
 			mediaPlayer.stop();
 			
@@ -98,6 +102,7 @@ public class Control {
 			mediaPlayer.play();
 			playing = true;
 			songList.getSelectionModel().select(songList.getSelectionModel().getSelectedIndex() - 1);
+			Sliders.initListeners(progressBar, volumeSlider);
 		}
 	}
 	public void plusVolume() {

@@ -9,12 +9,8 @@
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
-.quick-control-button {
-	-fx-border-color: #e8e8e8;
-	-fx-padding: 10px;
-	
-}
-.quick-control-button:hover {
-	-fx-focus-color: #e8e8e8;
-	-fx-border-color: #e8e8e8;
+
+.label {
+	-fx-font-family: Lato;
+	-fx-font-size: 15px;
 }
