@@ -17,8 +17,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Region;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Label;
 import javafx.scene.shape.SVGPath;
@@ -27,10 +25,12 @@ import javafx.geometry.Orientation;
 import com.tekronet.backend.Control;
 import com.tekronet.backend.Sliders;
 import com.tekronet.ui.Icons;
+import com.tekronet.ui.HelpView;
 
 public class MainView {	
 	
 	ListView<String> songList;
+	public static Label timeLabel;
 	public void createUi(Stage stage) {
 		stage.setTitle("Trumpet");
 		AnchorPane root = new AnchorPane();
@@ -94,7 +94,7 @@ public class MainView {
 		HBox quickControl = new HBox();
 		quickControl.setSpacing(20.0);
 		AnchorPane.setTopAnchor(quickControl, 10.0);
-		AnchorPane.setLeftAnchor(quickControl, 15.0);
+		AnchorPane.setLeftAnchor(quickControl, 12.0);
 
 		SVGPath pplay = Icons.createPath(Icons.PLAY);
 		SVGPath ppause = Icons.createPath(Icons.PAUSE);
@@ -119,35 +119,39 @@ public class MainView {
 		volumeSlider.setMin(0);
 		volumeSlider.setMax(100);
 		volumeSlider.setValue(100);
-		volumeSlider.setMinWidth(250);
 		AnchorPane.setLeftAnchor(volumeSlider, 215.0);
 		AnchorPane.setTopAnchor(volumeSlider, 30.0);
-		AnchorPane.setRightAnchor(volumeSlider, 250.0);
 
 		Label volumeLabel = new Label("Volume");
 		volumeLabel.getStyleClass().add("label");
 		AnchorPane.setLeftAnchor(volumeLabel, 220.0);
 		AnchorPane.setTopAnchor(volumeLabel, 8.0);
 
+		
+		AnchorPane statusPanel = new AnchorPane();
+		statusPanel.setMinWidth(265);
+		AnchorPane.setRightAnchor(statusPanel, 0.0);
+		AnchorPane.setLeftAnchor(statusPanel, 365.0);
+
 		Separator separator = new Separator();
 		separator.setOrientation(Orientation.VERTICAL);
 		separator.setPrefHeight(50);
-		AnchorPane.setRightAnchor(separator, 230.0);
+		AnchorPane.setLeftAnchor(separator, 0.0);
 
 		Label filenameLabel = new Label("Filename");
 		filenameLabel.getStyleClass().add("label");
-		AnchorPane.setRightAnchor(filenameLabel, 165.0);
+		AnchorPane.setLeftAnchor(filenameLabel, 10.0);
 		AnchorPane.setTopAnchor(filenameLabel, 4.0);
 
-		Label timeLabel = new Label("0:00/0:00");
+		timeLabel = new Label("0:00/0:00");
 		timeLabel.getStyleClass().add("label");
-		AnchorPane.setRightAnchor(timeLabel, 160.0);
+		AnchorPane.setLeftAnchor(timeLabel, 10.0);
 		AnchorPane.setTopAnchor(timeLabel, 25.0);
 
-
+		statusPanel.getChildren().addAll(separator, filenameLabel, timeLabel);
 
 		quickControlMenu.getChildren().addAll(
-		progressBar, volumeSlider, quickControl, volumeLabel, separator, filenameLabel, timeLabel);
+		progressBar, volumeSlider, quickControl, volumeLabel, statusPanel);
 				
 		//song list
 		songList = new ListView<String>();
@@ -157,10 +161,8 @@ public class MainView {
 		AnchorPane.setTopAnchor(songList, 27.0);
 		AnchorPane.setBottomAnchor(songList, 90.0);
 
-
 		root.getChildren().addAll(menubar, quickControlMenu, songList);
 
-		
 		//events
 		menuFileOpen.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -169,7 +171,7 @@ public class MainView {
 
 		menuFileClose.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent e) {control.closeSong(songList);}
+			public void handle(ActionEvent e) {control.closeSong(songList); play.setShape(pplay);}
 		});
 		menuFileClear.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -179,12 +181,17 @@ public class MainView {
 			@Override
 			public void handle(ActionEvent e) {
 				control.playPause();
+				if (control.playing) 
+					play.setShape(ppause);
+				else
+					play.setShape(pplay);
 			}
 		});
 		menuPlaybackStop.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				control.stop();
+				play.setShape(pplay);
 			}
 		});
 		
@@ -193,6 +200,7 @@ public class MainView {
 			public void handle(MouseEvent e) {
 				try {
 					control.createMediaPlayer(songList, progressBar, volumeSlider, filenameLabel);
+					play.setShape(ppause);
 				}
 				catch (Exception ex) {
 					System.out.println("Debug: clicked on listview but no files opened");
@@ -201,11 +209,92 @@ public class MainView {
 		});
 		menuPlaybackNextSong.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent e) {control.nextSong(songList, progressBar, volumeSlider);}
+			public void handle(ActionEvent e) {control.nextSong(songList, progressBar, volumeSlider, filenameLabel);}
 		});
 		menuPlaybackPrevSong.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent e) {control.prevSong(songList, progressBar, volumeSlider);}
+			public void handle(ActionEvent e) {control.prevSong(songList, progressBar, volumeSlider, filenameLabel);}
+		});
+
+		play.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override 
+			public void handle(MouseEvent e) {
+				if (control.selected)
+					control.playPause();
+				else 
+					control.createMediaPlayer(songList, progressBar, volumeSlider, filenameLabel);
+
+				if (control.playing)
+					play.setShape(ppause);
+				else
+					play.setShape(pplay);
+			}
+		});
+
+		stop.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				control.stop();
+				play.setShape(pplay);
+			}
+		});
+
+		next.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				control.nextSong(songList, progressBar, volumeSlider, filenameLabel);
+			}
+		});
+
+		prev.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				control.prevSong(songList, progressBar, volumeSlider, filenameLabel);
+			}
+		});
+
+		menuAudioVolumeUp.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				if (Control.mediaPlayer.getVolume() < 100) {
+					Control.mediaPlayer.setVolume(Control.mediaPlayer.getVolume() + 0.1);
+					volumeSlider.setValue(volumeSlider.getValue() + 10);
+				} 
+			}
+		});
+		menuAudioVolumeDown.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				if (Control.mediaPlayer.getVolume() > 0) {
+					Control.mediaPlayer.setVolume(Control.mediaPlayer.getVolume() - 0.1);
+					volumeSlider.setValue(volumeSlider.getValue() - 10);
+				} 
+			}
+		});
+		menuAudioSpeedUp.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				Control.mediaPlayer.setRate(Control.mediaPlayer.getRate() + 0.1);
+			}
+		});
+		menuAudioSpeedDown.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				Control.mediaPlayer.setRate(Control.mediaPlayer.getRate() - 0.1);
+			}
+		});
+		menuAudioSpeedReset.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				Control.mediaPlayer.setRate(1);
+			}
+		});
+		menuHelpAbout.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				HelpView h = new HelpView();
+				h.createUi();
+			}
 		});
 	}
 }

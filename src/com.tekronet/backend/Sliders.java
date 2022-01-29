@@ -10,16 +10,28 @@ import javafx.util.Duration;
 import javafx.scene.input.MouseEvent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.*;
+
+import com.tekronet.ui.MainView;
 
 public class Sliders {
 	
 	//progress bar
-	public static void initListeners(Slider progressBar, Slider volumeSlider) {
+	public static void initListeners(Slider progressBar, Slider volumeSlider, ListView<String> songList, Label l) {
 	
 		Control.mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 			@Override
 			public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
 				progressBar.setValue(newValue.toSeconds());
+				int max = (int) Math.round(progressBar.getMax());
+				int current = (int) Math.round(progressBar.getValue());
+
+				MainView.timeLabel.setText(
+					(current / 60) + ":" + String.format("%02d", (current % 60)) 
+					+ "/" + (max / 60) + ":" + String.format("%02d", (max % 60)));
+
+				if (current == max)
+					Control.nextSong(songList, progressBar, volumeSlider, l);
 			}
 		});
 		

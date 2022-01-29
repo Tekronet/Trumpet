@@ -14,3 +14,14 @@
 	-fx-font-family: Lato;
 	-fx-font-size: 15px;
 }
+
+.title {
+	-fx-font-family: Lato;
+	-fx-font-size: 22px;
+}
+
+.content {
+	-fx-font-family: Lato;
+	-fx-font-size: 15px;
+	-fx-border-color: transparent;
+}

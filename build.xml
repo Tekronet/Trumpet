@@ -14,6 +14,7 @@
         </javac>
         <copy file="src/com.tekronet/ui/main.css" todir="build/com/tekronet/ui"/>
         <copy file="src/com.tekronet/ui/res/Lato-Regular.ttf" todir="build/com/tekronet/ui/res"/>
+        <copy file="src/com.tekronet/ui/res/logo.png" todir="build/com/tekronet/ui/res"/>
     </target>
 
     <target name="jar" depends="compile">
@@ -28,6 +29,7 @@
     <target name="run" depends="jar">
         <java jar="jar/Trumpet.jar" fork="true" modulepath="./lib" >
         	<jvmarg line="--add-modules javafx.controls,javafx.graphics,javafx.media"/>
+            <jvmarg line="-Dfile.encoding=UTF-8"/>
         </java>
     </target>
     

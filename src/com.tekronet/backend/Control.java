@@ -17,10 +17,11 @@ public class Control {
 	public static MediaPlayer mediaPlayer;
 	
 	boolean second = false;
-	public boolean playing = false;
+	public static boolean playing = false;
+	public boolean selected = false;
 	int selectedIndex = 0;
 	
-	Playlist playlist = new Playlist();
+	static Playlist playlist = new Playlist();
 	
 	public void openFiles(ListView<String> songList) {
 		playlist.addSongs(songList);
@@ -30,8 +31,15 @@ public class Control {
 		if (second) {
 			mediaPlayer.stop();
 		}
+		String selectedSong;
 	
-		String selectedSong = songList.getSelectionModel().getSelectedItem();
+		if (songList.getSelectionModel().getSelectedIndex() < 0) {
+			selectedSong = songList.getItems().get(0);
+			songList.getSelectionModel().select(0);
+		}
+		else 
+			selectedSong = songList.getSelectionModel().getSelectedItem();
+		
 		File file = playlist.getMap().get(selectedSong);
 		
 		media = new Media(file.toURI().toString());
@@ -40,8 +48,9 @@ public class Control {
 		mediaPlayer.stop();
 		mediaPlayer.play();
 		playing = true;
-		Sliders.initListeners(progressBar, volumeSlider);
+		Sliders.initListeners(progressBar, volumeSlider, songList, l);
 		l.setText(file.getName());
+		selected = true;
 	}
 	
 	public void closeSong(ListView<String> songList) {
@@ -50,7 +59,8 @@ public class Control {
 	}
 	
 	public void clearPlaylist(ListView<String> songList) {
-		playlist.clearPlaylist(songList);		
+		playlist.clearPlaylist(songList);	
+		mediaPlayer.stop();	
 	}
 	
 	
@@ -68,13 +78,14 @@ public class Control {
 	public void stop() {
 		try {
 			mediaPlayer.stop();
+			selected = false;
 		}
 		catch (Exception e) {
 			System.out.println("Debug: Trying to invoke stop but mediaplayer not created yet");
 		}
 	}
 	
-	public void nextSong(ListView<String> songList, Slider progressBar, Slider volumeSlider) {
+	public static void nextSong(ListView<String> songList, Slider progressBar, Slider volumeSlider, Label l) {
 		if (songList.getSelectionModel().getSelectedIndex() + 1  < songList.getItems().size()) {
 			mediaPlayer.stop();
 			
@@ -86,11 +97,12 @@ public class Control {
 			mediaPlayer.play();
 			playing = true;
 			songList.getSelectionModel().select(songList.getSelectionModel().getSelectedIndex() + 1);
-			Sliders.initListeners(progressBar, volumeSlider);
+			Sliders.initListeners(progressBar, volumeSlider, songList, l);
+			l.setText(file.getName());
 		}
 	}
 	
-	public void prevSong(ListView<String> songList, Slider progressBar, Slider volumeSlider) {
+	public void prevSong(ListView<String> songList, Slider progressBar, Slider volumeSlider, Label l) {
 		if (songList.getSelectionModel().getSelectedIndex() > 0) {
 			mediaPlayer.stop();
 			
@@ -102,7 +114,8 @@ public class Control {
 			mediaPlayer.play();
 			playing = true;
 			songList.getSelectionModel().select(songList.getSelectionModel().getSelectedIndex() - 1);
-			Sliders.initListeners(progressBar, volumeSlider);
+			Sliders.initListeners(progressBar, volumeSlider, songList, l);
+			l.setText(file.getName());
 		}
 	}
 	public void plusVolume() {

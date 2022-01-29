@@ -15,4 +15,8 @@ public class Trumpet extends Application {
        	MainView mv = new MainView();
        	mv.createUi(primaryStage);
     }
+
+    public void openLink() {
+        getHostServices().showDocument("https://tekronet.github.io");
+    }
 }

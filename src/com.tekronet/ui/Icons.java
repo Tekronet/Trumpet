@@ -2,6 +2,9 @@ package com.tekronet.ui;
 
 import javafx.scene.layout.Region;
 import javafx.scene.shape.SVGPath;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+import javafx.scene.input.MouseEvent;
 
 public class Icons {
 
@@ -20,6 +23,19 @@ public class Icons {
 		svgShape.setMaxSize(w, h);
 		svgShape.setPrefSize(w, h);
 		svgShape.setStyle("-fx-background-color: black;");
+        
+        svgShape.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                svgShape.setStyle("-fx-background-color: #192d5c");
+            }
+        });
+        svgShape.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                svgShape.setStyle("-fx-background-color: black");
+            }
+        });
         return svgShape;
     }
 
