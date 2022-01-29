@@ -56,11 +56,13 @@ public class Control {
 	public void closeSong(ListView<String> songList) {
 		playlist.removeSong(songList);
 		mediaPlayer.stop();
+		selected = false;
 	}
 	
 	public void clearPlaylist(ListView<String> songList) {
 		playlist.clearPlaylist(songList);	
-		mediaPlayer.stop();	
+		mediaPlayer.stop();
+		selected = false;
 	}
 	
 	

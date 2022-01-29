@@ -180,7 +180,11 @@ public class MainView {
 		menuPlaybackPlay.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				control.playPause();
+				if (control.selected)
+					control.playPause();
+				else 
+					control.createMediaPlayer(songList, progressBar, volumeSlider, filenameLabel);
+					songList.getSelectionModel().select(0);
 				if (control.playing) 
 					play.setShape(ppause);
 				else
@@ -223,6 +227,7 @@ public class MainView {
 					control.playPause();
 				else 
 					control.createMediaPlayer(songList, progressBar, volumeSlider, filenameLabel);
+					songList.getSelectionModel().select(0);
 
 				if (control.playing)
 					play.setShape(ppause);
